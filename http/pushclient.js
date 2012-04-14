@@ -16,7 +16,7 @@ var pushClient=function() {
     }
     
     function handleChatMessage(content) {
-        
+        ui.addChatMessage($("#chat"),content.user,content.message);
     }
 
     function handleUpdatePlaylist(content) {

@@ -26,9 +26,11 @@ var ui = function() {
         var chatLine = $(document.createElement("div"));
         chatLine.addClass("chatLine");
         chatLine.append("<span class='chatUser'>"+username+": </span><span class='text'>"+text+"</span>");
-        
+        container.append(chatLine);
+        container.scrollTop(container.get().scrollHeight);
     }
     return {
-        "loadVideoDetails":loadVideoDetails
+        "loadVideoDetails":loadVideoDetails,
+        "addChatMessage":addChatMessage
     };
 }();
