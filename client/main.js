@@ -4,14 +4,15 @@ function userEntrySubmit() {
     username=$("#username").val();
     if (username=="") { return; }
     $(this).dialog("close");
+    $("#videoArea").show();
 }
 
 var player;
 
 function onYouTubePlayerReady(playerId) {
     player = document.getElementById("ytplayer");
-        //$("#userEntry").dialog({buttons: {"OK": userEntrySubmit}, "modal":true });
-    username="DavW";
+    
+    //username="DavW";
     pushClient.startListening();
     $("#videoSubmission").submit(function() {
         var textbox = $(this).find("[name='title']")
@@ -21,6 +22,9 @@ function onYouTubePlayerReady(playerId) {
     });
 }
 
+$(document).ready(function() {
+    $("#userEntry").dialog({buttons: {"OK": userEntrySubmit}, "modal":true });
+});
 var youtube=function() {
     function playVideo(videoId) {
         //var player = document.getElementById("ytplayer");
