@@ -1,70 +1,60 @@
-<!DOCTYPE html>  
-<html lang="en">  
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8" />  
-    <title>Blank HTML 5 Template</title>  
-    <script src="http://cdn.sockjs.org/sockjs-0.2.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-</head>  
+  <title>YouChoose - London Real-Time 2012</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript"></script>
+  <script src="http://cdn.sockjs.org/sockjs-0.2.min.js"></script>
+  <script src="lib/js/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
+  
+  <script src="nodeclient.js"></script>
+  <script src="pushclient.js"></script>
+  <script src="ui.js"></script>
+  <script src="main.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="lib/css/ui-darkness/jquery-ui-1.8.18.custom.css" />
+  <script type="text/javascript">
+    
+  </script>
+</head>
 <body>
+  <div id="mainColumn">
+    <div id="header">
+        <span>YouChoose</span>
+    </div>
+    <div id="submitArea">
+        Submit new video: <input type="text" name="title" id="videoSubmitInput" /><input type="submit" id="videoSubmitSubmit" />
+    </div>
+    <div id="videoArea" style="display:none";>
+        <h2 id="videoTitle">&nbsp;</h2>
+        <div id="ytapiplayer">
+            You need Flash player 8+ and JavaScript enabled to view this video.
+        </div>
+    </div>
+    <div id="playlistArea">
+        <h3>Top Videos</h3>
+        <div id="top" class="videoDetails"></div>
+        <h3>Recent Votes</h3>
+        <div id="recent" class="videoDetails"></div>
+    </div>
+    <div id="chatArea">
+        <h3>Discuss</h3>
+        <div id="chat">
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>  
+        </div>
+        <input type="text" name="message" id="chatInput" />
+    </div>
+
+    <div id="userEntry" style="display:none;">
+        <div>Enter a username for yourself</div>
+        <input type="text" id="usernameEntry" />
+    </div>
+  </div>
 </body>
-    <script>
-        var sock = new SockJS('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8888/sock');
-
-        sock.onopen = function() {
-           console.log('open');
-        };
-        sock.onmessage = function(e) {
-            data = JSON.parse(e.data);
-            if (data.type == 'loadVideo') {
-                content = data.content;
-                $('#current').text(content.title);
-            }
-
-            if (data.type == 'updatePlaylist') {
-                topList = data.content.top;
-                recentList = data.content.recent;
-
-                var e = $('#top');
-                e.empty();
-                for (i = 0, len = topList.length; i < len; ++i) {
-                    element = topList[i];
-                    var list = "["+(element.users.join(','))+"] ";
-                    var upvote = ' <a href="javascript:upvote(\''+element.id+'\');">UPVOTE</a>'
-                    e.append('<li>'+element.title+list+upvote+'</li>')
-                }
-
-                var e = $('#recent');
-                e.empty();
-                for (i = 0, len = recentList.length; i < len; ++i) {
-                    element = recentList[i];
-                    e.append('<li>'+element.title+'</li>')
-                }
-            }
-
-            console.log(data);
-        };
-        sock.onclose = function() {
-            console.log('close');
-        };
-
-        function add() {
-            $.get('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8888/add?title='+encodeURIComponent($('#title').val())+'&user='+encodeURIComponent($('#user').val()));
-        }
-
-        function upvote(id) {
-            $.get('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8888/upvote?id='+encodeURIComponent(id)+'&user='+encodeURIComponent($('#user').val()));
-        }
-    </script>
-    <input type = "text" id="user" value="marek" /><br/>
-    <input type = "text" id="title" value="the xx you got the love" /><a href="javascript:add()">Add</a>
-    <h1 id="current"></h1>
-    <h2>top</h2>
-    <ol id="top">
-
-    </ol>
-    <h2>recent</h2>
-    <ol id="recent">
-
-    </ol>
 </html>

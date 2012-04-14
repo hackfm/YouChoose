@@ -1,10 +1,22 @@
 var username;
 
 function userEntrySubmit() {
-    username=$("#username").val();
+    username=$("#usernameEntry").val();
     if (username=="") { return; }
     $("#userEntry").dialog("close");
     $("#videoArea").show();
+}
+
+function videoSubmit() {
+    var textbox = $("#videoSubmitInput");
+    nodeClient.add(username, textbox.val());
+    textbox.val("");
+}
+
+function chatSubmit() {
+    var msgbox = $("#chatInput");
+    nodeClient.chat(username, msgbox.val());
+    msgbox.val("");
 }
 
 var player;
@@ -13,24 +25,27 @@ function onYouTubePlayerReady(playerId) {
     player = document.getElementById("ytplayer");
     pushClient.startListening();
     
-    $("#videoSubmission").submit(function() {
-        var textbox = $(this).find("[name='title']");
-        nodeClient.add(username, textbox.val());
-        textbox.val("");
-        return false;
+    $("#videoSubmitInput").keypress(function(e) {
+        if(e.which == 13) {
+            videoSubmit();
+        }
     });
+    $("#videoSubmitSubmit").click(videoSubmit);
     
-    $("#chatForm").submit(function() {
-        var msg = $(this).find("[name='message']");
-        nodeClient.chat(username, msg);
-        msg.val("");
-        return false;
+    $("#chatInput").keypress(function(e) {
+        if(e.which == 13) {
+            chatSubmit();
+        }
     });
 }
 
 $(document).ready(function() {
     $("#userEntry").dialog({buttons: {"OK": userEntrySubmit}, "modal":true });
-    $("#userEntryForm").submit(userEntrySubmit);
+    $("#usernameEntry").keypress(function(e) {
+        if (e.which==13) {
+            userEntrySubmit();
+        }
+    });
 });
 var youtube=function() {
     function playVideo(videoId,startTime) {
