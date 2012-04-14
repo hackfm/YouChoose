@@ -7,6 +7,8 @@ fs         = require 'fs'
 Queue      = require './Queue'
 QueueEntry = require './QueueEntry'
 youtube    = require './youtube'
+Twilio     = require './twilio'
+Chat       = require './Chat'
 
 # MIME Types
 mimeTypes = 
@@ -16,6 +18,9 @@ mimeTypes =
     png:  "image/png"
     js:   "text/javascript"
     css:  "text/css"
+
+#Chat
+chat = new Chat()
 
 # Socket Server
 sockServer = sockjs.createServer()
@@ -33,6 +38,10 @@ sockServer.on 'connection', (conn) ->
 
     queue.on 'update', sendUpdate
     queue.on 'currentVideo', sendCurrentVideo
+
+    chat.on 'chat', (user, message) =>
+        json = {type: 'chat', content:{user:user, message:message}}
+        conn.write JSON.stringify json
 
     # Send updates
     if queue.hasCurrentVideo()
@@ -61,6 +70,20 @@ crossDomainHeaders = (req, res) ->
     if req.headers['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']?
         res.setHeader 'Access-Control-Allow-Headers', req.headers['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']
 
+# Generic add Video function
+addVideo = (title, user) ->
+    youtube title, (id, title, length, image) =>
+        console.log id
+        if videoInQueue = queue.getVideoById id
+            videoInQueue.upvote user
+            queue.sendPlaylistUpdate()
+        else
+            entry = new QueueEntry id, title, length, image
+            entry.upvote user
+            queue.addVideo entry
+
+# Twilio 
+twilio = new Twilio addVideo
 
 # Start a http server
 server = http.createServer (req, res) ->
@@ -71,6 +94,9 @@ server = http.createServer (req, res) ->
     query = url.parse(req.url, true).query;
     # TODO: check some special case uris
     console.log uri
+
+    if uri is '/'
+        uri = '/index.html'
     
     # Add a song to list
     if uri is '/add'
@@ -87,10 +113,7 @@ server = http.createServer (req, res) ->
         title = query.title
         user = query.user
 
-        youtube title, (id, title, length, image) =>
-            entry = new QueueEntry id, title, length, image
-            entry.upvote user
-            queue.addVideo entry
+        addVideo title, user
 
         res.writeHead 200, {'Content-Type': 'text/plain'}
         res.write '200 OK\n'
@@ -122,6 +145,18 @@ server = http.createServer (req, res) ->
         res.end()   
         return
 
+    if uri is '/chat'
+        unless query.user? 
+            res.write '404 No user found\n';
+            return
+
+        unless query.message? 
+            res.write '404 No message found\n';
+            return
+
+        chat.chat user, message
+
+
     # no special case, so use the filesystem
     filename = path.join process.cwd()+"/http/", uri
 
@@ -147,5 +182,6 @@ else
     # Add ws server to http server
     sockServer.installHandlers server, {prefix:'/sock'}
     port = args[0]
-    server.listen port, '0.0.0.0'
     console.log 'Listening on port', port
+    server.listen port, '0.0.0.0'
+    

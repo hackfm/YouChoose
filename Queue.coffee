@@ -6,6 +6,7 @@ class Queue extends events.EventEmitter
         @videos = []
         @currentVideo = null
         @startedVideoOn = null
+        @setMaxListeners 0
 
     addVideo: (entry) =>
         if @currentVideo is null
@@ -17,6 +18,7 @@ class Queue extends events.EventEmitter
     shiftTopVideo: () =>
         topVideoId = @getTopList()[0].id
         newVideoList = []
+        topVideo = null
         _.each @videos, (element) =>
             if element.id is topVideoId
                 topVideo = element

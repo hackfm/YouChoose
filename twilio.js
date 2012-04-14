@@ -23,6 +23,7 @@ var req_complete = function(req, res, callback, incoming_data) {
     catch (e)
     {
         console.log("Twilio callback server caught an exception");
+        console.log(e);
     }
 };
 
