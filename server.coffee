@@ -40,14 +40,14 @@ sockServer.on 'connection', (conn) ->
 
 # Start queue
 queue = new Queue()
-youtube 'heretics - don\'t be late', (id, title, length, image) =>
+youtube 'Shortest video ever... explained in the description below.', (id, title, length, image) =>
     entry = new QueueEntry id, title, length, image
     entry.upvote 'default user'
     queue.addVideo entry
-youtube 'Google Maps 8-bit for NES', (id, title, length, image) =>
-    entry = new QueueEntry id, title, length, image
-    entry.upvote 'default user'
-    queue.addVideo entry
+    youtube 'Google Maps 8-bit for NES', (id, title, length, image) =>
+        entry = new QueueEntry id, title, length, image
+        entry.upvote 'default user'
+        queue.addVideo entry
 
 
 # Cross origin

@@ -11,6 +11,7 @@ class QueueEntry
             # user has already voted
             return false
         @users.push user
+        @timestamp = new Date().getTime()
 
     getElement: () =>
         return {
