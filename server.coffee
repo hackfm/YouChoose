@@ -40,14 +40,15 @@ sockServer.on 'connection', (conn) ->
 
 # Start queue
 queue = new Queue()
-e1 = new QueueEntry('K53XiofvEak', 'HERETICS - Don\'t Be Late', 247, 'http://i3.ytimg.com/vi/K53XiofvEak/default.jpg')
-e1.upvote 'marek'
-e1.upvote 'sven'
-e1.upvote 'davw'
-queue.addVideo e1
-e2 = new QueueEntry('K53XiofvEak', 'HERETICS - Don\'t Be Late', 247, 'http://i3.ytimg.com/vi/K53XiofvEak/default.jpg')
-e2.upvote 'marek'
-queue.addVideo e2
+youtube 'heretics - don\'t be late', (id, title, length, image) =>
+    entry = new QueueEntry id, title, length, image
+    entry.upvote 'default user'
+    queue.addVideo entry
+youtube 'Google Maps 8-bit for NES', (id, title, length, image) =>
+    entry = new QueueEntry id, title, length, image
+    entry.upvote 'default user'
+    queue.addVideo entry
+
 
 # Cross origin
 crossDomainHeaders = (req, res) ->
@@ -96,7 +97,6 @@ server = http.createServer (req, res) ->
         youtube title, (id, title, length, image) =>
             entry = new QueueEntry id, title, length, image
             entry.upvote user
-            console.log entry
             queue.addVideo entry
 
         res.writeHead 200, {'Content-Type': 'text/plain'}
@@ -115,10 +115,9 @@ server = http.createServer (req, res) ->
             res.write '404 No user found\n';
             return
 
-        id = query.id
-        user = query.user
-
-        console.log 'upvote', user, id
+        video = queue.getVideoById query.id
+        video.upvote query.user
+        queue.sendPlaylistUpdate()
 
         res.writeHead 200, {'Content-Type': 'text/plain'}
         res.write '200 OK\n'
