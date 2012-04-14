@@ -1,8 +1,13 @@
-body {font-family:sans-serif; }
-#playlistArea { position:absolute;left:730px;top:0px; }
+body {font-family:sans-serif; background-color: #EBEBEB; color: #333;}
+#playlistArea { position:absolute;left:730px;top:0px;width:300px; }
 img {vertical-align:middle; }
 .upvoteButton { cursor: pointer; width:20px; height:20px; background: url(img/upvote.png); display:inline-block; }
-#header {width:164px; height:60px; background: url(img/logo.png);}
+.upvoteDisabled { width:20px; height:20px; background: url(img/upvote_disabled.png); display:inline-block; }
+#header {width:164px; height:60px; background: url(img/logo.png) no-repeat; margin-bottom:20px;}
 #header span {display:none; }
 .thumbnail {width:40px; height:40px; }
 .videoEntry {border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; margin-top:2px; margin-bottom:2px;}
+#submitArea {position:absolute; top:20px; left: 200px; }
+h3 {background-color:#2B2B2B; color:#FFF; font-weight:normal; font-size:0.9em; padding:5px;}
+#mainColumn {margin-left:auto; margin-right:auto; width:1050px;position:relative;}
+.videoTitle {font-size:0.9em; }

@@ -12,6 +12,8 @@ var ui = function() {
                 videoEntry.find(".upvoteButton").click(function() {
                     nodeClient.upvote(username, vd.id); 
                 });
+            } else {
+            videoEntry.append("<span class='upvoteDisabled'></span>");
             }
             
             videoEntry.append("<span class='videoTitle'>"+vd.title+"</span>");
