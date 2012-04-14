@@ -10,14 +10,38 @@ class Queue extends events.EventEmitter
     addVideo: (entry) =>
         if @currentVideo is null
             @setCurrentVideo entry
-            @emit 'currentVideo'
         else
             @videos.push entry
             @emit 'update'
 
+    shiftTopVideo: () =>
+        topVideoId = @getTopList()[0].id
+        newVideoList = []
+        _.each @videos, (element) =>
+            if element.id is topVideoId
+                topVideo = element
+            else
+                newVideoList.push element
+        @videos = newVideoList
+        return topVideo
+
+
     setCurrentVideo: (entry) =>
+        if entry is null
+            @currentVideo = null
+            @startedVideoOn = null
+            return 
         @currentVideo = entry
         @startedVideoOn = new Date().getTime()
+        setTimeout () =>
+            if @videos.length 
+                newEntry = @shiftTopVideo()
+                @setCurrentVideo newEntry
+            else
+                @setCurrentVideo null
+        , (entry.videoLength * 1000)
+        @emit 'currentVideo'
+        @emit 'update'
 
     getSortedList: (sortFunction) =>
         listSorted = _.sortBy @videos, sortFunction
@@ -56,7 +80,8 @@ class Queue extends events.EventEmitter
     getVideoById: (id) =>
         video = null
         _.each @videos, (element) =>
-            video = element
+            if element.id is id
+                video = element
         return video
 
     sendPlaylistUpdate: () =>

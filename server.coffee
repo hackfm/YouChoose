@@ -3,6 +3,7 @@ sockjs     = require 'sockjs'
 url        = require 'url'
 path       = require 'path'
 fs         = require 'fs'
+#process    = require 'process'
 Queue      = require './Queue'
 QueueEntry = require './QueueEntry'
 youtube    = require './youtube'
@@ -40,14 +41,6 @@ sockServer.on 'connection', (conn) ->
 
 # Start queue
 queue = new Queue()
-youtube 'heretics - don\'t be late', (id, title, length, image) =>
-    entry = new QueueEntry id, title, length, image
-    entry.upvote 'default user'
-    queue.addVideo entry
-youtube 'Google Maps 8-bit for NES', (id, title, length, image) =>
-    entry = new QueueEntry id, title, length, image
-    entry.upvote 'default user'
-    queue.addVideo entry
 
 
 # Cross origin
@@ -116,6 +109,11 @@ server = http.createServer (req, res) ->
             return
 
         video = queue.getVideoById query.id
+        if video is null
+            res.writeHead 200, {'Content-Type': 'text/plain'}
+            res.write '404 Video not found\n'
+            res.end()   
+            return
         video.upvote query.user
         queue.sendPlaylistUpdate()
 
@@ -140,6 +138,14 @@ server = http.createServer (req, res) ->
         fileStream.pipe res
          
 
-# Add ws server to http server
-sockServer.installHandlers server, {prefix:'/sock'}
-server.listen 8888, '0.0.0.0'
+
+
+args = process.argv.splice(2);
+if args.length < 1
+    console.log 'Please define a port'
+else
+    # Add ws server to http server
+    sockServer.installHandlers server, {prefix:'/sock'}
+    port = args[0]
+    server.listen port, '0.0.0.0'
+    console.log 'Listening on port', port
