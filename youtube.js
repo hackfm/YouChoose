@@ -20,14 +20,21 @@ var youtube = module.exports = function(query, callback, errorcallback) {
         {
             res.on("data", function(chunk) { data += chunk; });
             res.on("end", function() { 
-                var results = JSON.parse(data);
-                
-                var title = results.feed.entry[0].title["$t"];
-                var id = results.feed.entry[0]["media$group"]["yt$videoid"]["$t"];
-                var length = results.feed.entry[0]["media$group"]["yt$duration"].seconds;
-                var thumbnail = results.feed.entry[0]["media$group"]["media$thumbnail"][0]["url"];
+                try
+                {
+                    var results = JSON.parse(data);
 
-                callback(id, title, length, thumbnail);
+                    var title = results.feed.entry[0].title["$t"];
+                    var id = results.feed.entry[0]["media$group"]["yt$videoid"]["$t"];
+                    var length = Number(results.feed.entry[0]["media$group"]["yt$duration"].seconds);
+                    var thumbnail = results.feed.entry[0]["media$group"]["media$thumbnail"][0]["url"];
+
+                    callback(id, title, length, thumbnail);
+                }
+                catch (e)
+                {
+                    errorcallback();
+                }
             });
         }
         else
