@@ -61,8 +61,8 @@ class Queue extends events.EventEmitter
             return -a.timestamp
 
     getQueue: () =>
-        top    = @getTopList() 
-        recent = @getRecentList() 
+        top    = @getTopList().slice 0,5
+        recent = @getRecentList().slice 0,5
         return {type: "updatePlaylist", content: {top: top, recent: recent}}
 
     hasCurrentVideo: () =>

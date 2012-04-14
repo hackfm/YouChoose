@@ -23,12 +23,15 @@ mimeTypes =
 chat = new Chat()
 
 # Socket Server
+currentConnections = 0;
 sockServer = sockjs.createServer()
 sockServer.on 'connection', (conn) ->
+    ++currentConnections
     #conn.on 'data', (message) ->
     #    conn.write message
     conn.on 'close', () ->
         console.log 'close'
+        --currentConnections
 
     sendUpdate = () =>
         conn.write JSON.stringify queue.getQueue()
@@ -77,13 +80,21 @@ addVideo = (title, user) ->
         if videoInQueue = queue.getVideoById id
             videoInQueue.upvote user
             queue.sendPlaylistUpdate()
+            chat.sysMessage user, "has upvoted "+videoInQueue.title
         else
             entry = new QueueEntry id, title, length, image
             entry.upvote user
             queue.addVideo entry
+            chat.sysMessage user, "has added "+title
+    () =>
+        console.log 'YouTube error callback'
 
 # Twilio 
-twilio = new Twilio addVideo
+try 
+    twilio = new Twilio addVideo
+catch e
+    console.log 'Wasn\'t able to start twilio since the port is already in use'
+
 
 # Start a http server
 server = http.createServer (req, res) ->
@@ -115,6 +126,8 @@ server = http.createServer (req, res) ->
 
         addVideo title, user
 
+
+
         res.writeHead 200, {'Content-Type': 'text/plain'}
         res.write '200 OK\n'
         res.end() 
@@ -140,6 +153,8 @@ server = http.createServer (req, res) ->
         video.upvote query.user
         queue.sendPlaylistUpdate()
 
+        chat.sysMessage query.user, "has upvoted "+video.title
+
         res.writeHead 200, {'Content-Type': 'text/plain'}
         res.write '200 OK\n'
         res.end()   
@@ -150,11 +165,44 @@ server = http.createServer (req, res) ->
             res.write '404 No user found\n';
             return
 
-        unless query.message? 
+        unless query.msg? 
             res.write '404 No message found\n';
             return
 
-        chat.chat user, message
+        chat.chat query.user, query.msg
+
+        res.writeHead 200, {'Content-Type': 'text/plain'}
+        res.write '200 OK\n'
+        res.end()   
+        return
+
+
+    if uri is '/geckoboard'
+        currentText = 'Nothing'
+        currentNumber = 0
+        currentVideo = queue.getCurrentVideo()
+        if currentVideo.content?
+            currentText = currentVideo.content.title 
+            currentNumber = currentVideo.content.getScore()
+        topList = queue.getTopList()
+        
+        nextText = 'Nothing'
+        nextNumber = 0
+        if topList.length > 0
+            topElement = topList[0]
+            nextText = topElement.title 
+            nextNumber = topElement.score
+
+        result = '<?xml version="1.0" encoding="UTF-8"?> 
+            <root>  
+                <item>  <value>'+currentConnections+'</value>  <text>Connections</text>  </item>  
+                <item>  <value>'+currentNumber+'</value>   <text>Currently playing: '+currentText+'</text>  </item> 
+                <item>  <value>'+nextNumber+'</value>   <text>Next video: '+nextText+'</text>  </item> 
+            </root>'
+        res.writeHead 200, {'Content-Type': 'text/xml'}
+        res.write result
+        res.end() 
+        return
 
 
     # no special case, so use the filesystem
