@@ -24,9 +24,7 @@
         <span>YouChoose</span>
     </div>
     <div id="submitArea">
-        <form action="#" id="videoSubmission">
-            Submit new video: <input type="text" name="title" /><input type="submit" value="submit" />
-        </form>
+        Submit new video: <input type="text" name="title" id="videoSubmitInput" /><input type="submit" id="videoSubmitSubmit" />
     </div>
     <div id="videoArea" style="display:none";>
         <h2 id="videoTitle">&nbsp;</h2>
@@ -50,15 +48,12 @@
             <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
             <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>  
         </div>
-        <form action="#" id="chatForm"><input type="text" name="message" id="chatInput" /><input type="submit" style="visibility:hidden;" /></form>
+        <input type="text" name="message" id="chatInput" />
     </div>
 
     <div id="userEntry" style="display:none;">
         <div>Enter a username for yourself</div>
-        <form action="#" id="userEntryForm">
-            <input type="text" id="username" />
-            <input type="submit" style="visibility:hidden;" />
-        </form>
+        <input type="text" id="usernameEntry" />
     </div>
   </div>
 </body>
