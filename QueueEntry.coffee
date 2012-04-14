@@ -18,7 +18,9 @@ class QueueEntry
             title:       @title
             img:         @img
             users:       @users
-            videoLength: @videoLength
+            videoLength: @videoLength,
+            score:       @getScore(),
+            timestamp:   @timestamp
         }
 
     getScore: () =>

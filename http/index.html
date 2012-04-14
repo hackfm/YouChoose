@@ -29,9 +29,11 @@
                 e.empty();
                 for (i = 0, len = topList.length; i < len; ++i) {
                     element = topList[i];
-                    e.append('<li>'+element.title+'</li>')
+                    var list = "["+(element.users.join(','))+"] ";
+                    var upvote = ' <a href="javascript:upvote(\''+element.id+'\');">UPVOTE</a>'
+                    e.append('<li>'+element.title+list+upvote+'</li>')
                 }
-                
+
                 var e = $('#recent');
                 e.empty();
                 for (i = 0, len = recentList.length; i < len; ++i) {
@@ -48,6 +50,10 @@
 
         function add() {
             $.get('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8888/add?title='+encodeURIComponent($('#title').val())+'&user='+encodeURIComponent($('#user').val()));
+        }
+
+        function upvote(id) {
+            $.get('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8888/upvote?id='+encodeURIComponent(id)+'&user='+encodeURIComponent($('#user').val()));
         }
     </script>
     <input type = "text" id="user" value="marek" /><br/>

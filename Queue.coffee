@@ -8,13 +8,11 @@ class Queue extends events.EventEmitter
         @startedVideoOn = null
 
     addVideo: (entry) =>
-        console.log entry
         if @currentVideo is null
             @setCurrentVideo entry
             @emit 'currentVideo'
         else
             @videos.push entry
-            console.log 'updateQueue'
             @emit 'update'
 
     setCurrentVideo: (entry) =>
@@ -22,19 +20,19 @@ class Queue extends events.EventEmitter
         @startedVideoOn = new Date().getTime()
 
     getSortedList: (sortFunction) =>
+        listSorted = _.sortBy @videos, sortFunction
         list = []
-        _.each @videos, (element) =>
+        _.each listSorted, (element) =>
             list.push element.getElement()
-        # sort here
         return list
 
     getTopList: () =>
         return @getSortedList (a) ->
-            return a.getSortedList()
+            return -a.getScore()
 
     getRecentList: () =>
         return @getSortedList (a) ->
-            return a.timestamp
+            return -a.timestamp
 
     getQueue: () =>
         top    = @getTopList() 
@@ -54,5 +52,14 @@ class Queue extends events.EventEmitter
         content = _.clone @currentVideo
         content.position = position
         return {type: "loadVideo", content: content}
+
+    getVideoById: (id) =>
+        video = null
+        _.each @videos, (element) =>
+            video = element
+        return video
+
+    sendPlaylistUpdate: () =>
+        @emit 'update'
 
 module.exports = Queue 
