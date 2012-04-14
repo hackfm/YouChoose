@@ -1,0 +1,64 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>
+    <meta charset="utf-8" />  
+    <title>Blank HTML 5 Template</title>  
+    <script src="http://cdn.sockjs.org/sockjs-0.2.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+</head>  
+<body>
+</body>
+    <script>
+        var sock = new SockJS('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8888/sock');
+
+        sock.onopen = function() {
+           console.log('open');
+        };
+        sock.onmessage = function(e) {
+            data = JSON.parse(e.data);
+            if (data.type == 'loadVideo') {
+                content = data.content;
+                $('#current').text(content.title);
+            }
+
+            if (data.type == 'updatePlaylist') {
+                topList = data.content.top;
+                recentList = data.content.recent;
+
+                var e = $('#top');
+                e.empty();
+                for (i = 0, len = topList.length; i < len; ++i) {
+                    element = topList[i];
+                    e.append('<li>'+element.title+'</li>')
+                }
+                
+                var e = $('#recent');
+                e.empty();
+                for (i = 0, len = recentList.length; i < len; ++i) {
+                    element = recentList[i];
+                    e.append('<li>'+element.title+'</li>')
+                }
+            }
+
+            console.log(data);
+        };
+        sock.onclose = function() {
+            console.log('close');
+        };
+
+        function add() {
+            $.get('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8888/add?title='+encodeURIComponent($('#title').val())+'&user='+encodeURIComponent($('#user').val()));
+        }
+    </script>
+    <input type = "text" id="user" value="marek" /><br/>
+    <input type = "text" id="title" value="the xx you got the love" /><a href="javascript:add()">Add</a>
+    <h1 id="current"></h1>
+    <h2>top</h2>
+    <ol id="top">
+
+    </ol>
+    <h2>recent</h2>
+    <ol id="recent">
+
+    </ol>
+</html>
