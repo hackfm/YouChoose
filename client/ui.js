@@ -13,12 +13,20 @@ var ui = function() {
                     nodeClient.upvote(username, vd.id); 
                 });
             } else {
-            videoEntry.append("<span class='upvoteDisabled'></span>");
+                videoEntry.append("<span class='upvoteDisabled'></span>");
             }
+            durationString = Math.floor(vd["videoLength"]/60)+":"+(vd["videoLength"]%60);
             
-            videoEntry.append("<span class='videoTitle'>"+vd.title+"</span>");
+            videoEntry.append("<span class='videoTitle'>"+vd.title+" ("+durationString+")</span>");
             container.append(videoEntry);
         });
+    }
+    
+    function addChatMessage(container, username, text) {
+        var chatLine = $(document.createElement("div"));
+        chatLine.addClass("chatLine");
+        chatLine.append("<span class='chatUser'>"+username+": </span><span class='text'>"+text+"</span>");
+        
     }
     return {
         "loadVideoDetails":loadVideoDetails

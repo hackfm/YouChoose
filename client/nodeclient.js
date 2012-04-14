@@ -6,6 +6,9 @@ var nodeClient = function() {
         },
         "upvote": function(user, videoId) {
             $.ajax(clientUrl+"/upvote", {data: {"user": user, "id": videoId}});
+        },
+        "chat": function(user, msg) {
+            $.ajax(clientUrl+"/chat", {data: {"user": user, "msg": msg}});
         }
     };
 }();

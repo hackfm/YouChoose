@@ -29,6 +29,7 @@
         </form>
     </div>
     <div id="videoArea" style="display:none";>
+        <h2 id="videoTitle">&nbsp;</h2>
         <div id="ytapiplayer">
             You need Flash player 8+ and JavaScript enabled to view this video.
         </div>
@@ -39,10 +40,25 @@
         <h3>Recent Votes</h3>
         <div id="recent" class="videoDetails"></div>
     </div>
+    <div id="chatArea">
+        <h3>Discuss</h3>
+        <div id="chat">
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>
+            <div style="chatLine"><span class="chatUser">User:</span> Some kind of text. </div>  
+        </div>
+        <form action="#" id="chatForm"><input type="text" name="message" id="chatInput" /><input type="submit" style="visibility:hidden;" /></form>
+    </div>
 
     <div id="userEntry" style="display:none;">
         <div>Enter a username for yourself</div>
-        <input type="text" id="username" />
+        <form action="#" id="userEntryForm">
+            <input type="text" id="username" />
+            <input type="submit" style="visibility:hidden;" />
+        </form>
     </div>
   </div>
 </body>

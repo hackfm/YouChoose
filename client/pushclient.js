@@ -14,6 +14,10 @@ var pushClient=function() {
            console.log('close');
         };
     }
+    
+    function handleChatMessage(content) {
+        
+    }
 
     function handleUpdatePlaylist(content) {
         ui.loadVideoDetails($("#recent"),content.recent);
@@ -21,13 +25,19 @@ var pushClient=function() {
     }
     
     function handleLoadVideo(content) {
-        youtube.playVideo(content.id);
+        if (content === null) {
+            alert("Video not found");
+        }
+        youtube.playVideo(content.id, content.position);
+        $("#videoTitle").text(content.title);
     }
     function handleMessage (msg) {
             if (msg.type=="loadVideo") {
                 handleLoadVideo(msg.content);
             } else if (msg.type=="updatePlaylist") {
                 handleUpdatePlaylist(msg.content);
+            } else if (msg.type=="chat") {
+                handleChatMessage(msg.content);
             }
     }
     
