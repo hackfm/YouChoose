@@ -44,8 +44,8 @@ var ui = function() {
         chatLine.addClass("chatLine");
         var chatUser = $(document.createElement("span"));
         chatUser.addClass("chatUser");
-        chatUser.append(document.createTextNode(username));
-        var chatMessage = $(document.createElement("span"));
+        chatUser.append(document.createTextNode(username+": " ));
+        var chatMessage = $(document.createElement("span"))
         chatMessage.addClass("text");
         chatMessage.append(document.createTextNode(text));
         chatLine.append(chatUser);
