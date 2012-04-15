@@ -9,6 +9,9 @@ var nodeClient = function() {
         },
         "chat": function(user, msg) {
             $.ajax(clientUrl+"/chat", {data: {"user": user, "msg": msg}});
+        },
+        "skip": function(user) {
+            $.ajax(clientUrl+"/skip", {data: {"user": user}});
         }
     };
 }();

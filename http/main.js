@@ -1,4 +1,5 @@
 var username;
+var player;
 
 function userEntrySubmit() {
     username=$("#usernameEntry").val();
@@ -19,7 +20,7 @@ function chatSubmit() {
     msgbox.val("");
 }
 
-var player;
+
 
 function onYouTubePlayerReady(playerId) {
     player = document.getElementById("ytplayer");
@@ -37,6 +38,7 @@ function onYouTubePlayerReady(playerId) {
             chatSubmit();
         }
     });
+    
 }
 
 $(document).ready(function() {

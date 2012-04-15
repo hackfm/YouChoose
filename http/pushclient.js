@@ -1,6 +1,7 @@
 var pushClient=function() {
+    var sockUrl="http://youchoose.cloudfoundry.com/sock";
     function startListening() {
-        var sock = new SockJS('http://youchoose.cloudfoundry.com/sock');
+        var sock = new SockJS(sockUrl);
 
         sock.onopen = function() {
            console.log('open');
@@ -31,6 +32,11 @@ var pushClient=function() {
         youtube.playVideo(content.id, content.position);
         $("#videoTitle").text(content.title);
     }
+    
+    function handleSkipMessage(content) {
+        ui.updateSkipBox($("#skipArea"), content.users, content.needed);
+    }
+    
     function handleMessage (msg) {
             if (msg.type=="loadVideo") {
                 handleLoadVideo(msg.content);
@@ -38,10 +44,12 @@ var pushClient=function() {
                 handleUpdatePlaylist(msg.content);
             } else if (msg.type=="chat") {
                 handleChatMessage(msg.content);
+            } else if (msg.type=="skipCount") {
+                handleSkipMessage(msg.content);
             }
     }
     
     return {
         "startListening":startListening
-        };
+    };
 }();
