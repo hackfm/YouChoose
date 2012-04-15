@@ -56,6 +56,7 @@ var youtube=function() {
     }
     function stopVideo() {
         player.stopVideo();
+        player.clearVideo();
     }
     
     swfobject.embedSWF("http://www.youtube.com/apiplayer?enablejsapi=1&version=3&playerapiid=ytplayer",
