@@ -15,11 +15,27 @@ var ui = function() {
             } else {
                 videoEntry.append("<span class='upvoteDisabled'></span>");
             }
-            durationString = Math.floor(vd["videoLength"]/60)+":"+(vd["videoLength"]%60);
+            var mins = Math.floor(vd["videoLength"]/60);
+            var secs = (vd["videoLength"]%60);
+            durationString = mins+":"+(secs<10?"0":"")+secs;
             
             videoEntry.append("<span class='videoTitle'>"+vd.title+" ("+durationString+")</span>");
             container.append(videoEntry);
         });
+    }
+    
+    function updateSkipBox(container, skippedUsers, skipsNeeded) {
+        container.empty();
+        container.append("Vote to skip ");
+        if (skippedUsers.indexOf(username)==-1) {
+            container.append("<span class='skipButton'></span> ");
+            container.find(".skipButton").click(function() {
+                nodeClient.skip(username); 
+            });
+        } else {
+            container.append("<span class='skipButtonDisabled'></span> ");
+        }
+        container.append(skippedUsers.length +" of "+skipsNeeded + " required");
     }
     
     function addChatMessage(container, username, text) {
@@ -32,6 +48,7 @@ var ui = function() {
     }
     return {
         "loadVideoDetails":loadVideoDetails,
-        "addChatMessage":addChatMessage
+        "addChatMessage":addChatMessage,
+        "updateSkipBox":updateSkipBox
     };
 }();
