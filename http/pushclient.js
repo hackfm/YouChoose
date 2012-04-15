@@ -26,7 +26,7 @@ var pushClient=function() {
     }
     
     function handleLoadVideo(content) {
-        if (content === null) {
+        if (content == null) {
             youtube.stopVideo();
         }
         youtube.playVideo(content.id, content.position);
