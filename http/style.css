@@ -26,3 +26,4 @@ img {vertical-align:middle; }
 h3 {background-color:#2B2B2B; color:#FFF; font-weight:normal; font-size:0.9em; padding:5px;}
 .videoEntry {border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; margin-top:2px; margin-bottom:2px; position:relative;}
 .videoTitle {font-size:0.9em;  display:inline-block; position:absolute; left:70px;top:5px;height:40px; overflow:hidden;}
+.geckoLink {font-size:0.8em;}
