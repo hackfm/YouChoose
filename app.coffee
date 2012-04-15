@@ -43,6 +43,9 @@ sockServer.on 'connection', (conn) ->
 
     queue.on 'update', sendUpdate
     queue.on 'currentVideo', sendCurrentVideo
+    queue.on 'noVideo', () =>
+        json = {type: 'loadVideo', content:null}
+        conn.write JSON.stringify json
     queue.on 'skipCount', (needed, users) =>
         json = {type: 'skipCount', content:{needed:needed, users:users}}
         conn.write JSON.stringify json

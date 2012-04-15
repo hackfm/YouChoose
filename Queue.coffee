@@ -35,8 +35,7 @@ class Queue extends events.EventEmitter
             @currentVideo = null
             @startedVideoOn = null
 
-            @emit 'currentVideo'
-            @updateSkip()
+            @emit 'noVideo'
             @emit 'skipCount', 0, []
             return 
         @currentVideo = entry
@@ -81,7 +80,6 @@ class Queue extends events.EventEmitter
 
     updateConnectionNumber: (count) =>
         @connections = count
-
 
     skipToNextVideo: () =>
         if @videos.length 

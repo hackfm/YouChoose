@@ -10,6 +10,7 @@ var youtube = module.exports = function(query, callback, errorcallback) {
             pathname: "/feeds/api/videos",
             query: {
                 q: query,
+                format: 5,
                 "max-results": 1,
                 alt: "json",
                 v: 2
