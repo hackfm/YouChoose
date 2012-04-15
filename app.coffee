@@ -91,7 +91,7 @@ addVideo = (title, user) ->
 
 # Twilio 
 try 
-    twilio = new Twilio addVideo
+    twilio = new Twilio.twilio addVideo
 catch e
     console.log 'Wasn\'t able to start twilio since the port is already in use'
 
@@ -176,6 +176,9 @@ server = http.createServer (req, res) ->
         res.end()   
         return
 
+    if uri is '/twilio'
+        Twilio.httpcall req,res
+        return
 
     if uri is '/geckoboard'
         currentText = 'Nothing'

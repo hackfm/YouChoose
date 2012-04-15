@@ -27,11 +27,28 @@ var req_complete = function(req, res, callback, incoming_data) {
     }
 };
 
-var TwilioServer = module.exports = function(callback, port) {
+var callbackHTTP = null;
+
+var TwilioServer = module.exports.twilio = function(callback, port) {
     this.port = port || 8070;
     this.callback = callback;
     
     this.httpserver = http.createServer(function(req, res) {
         handle_request(req, res, callback);
     }).listen(this.port);
+
+    callbackHTTP = function (req, res) {
+        handle_request(req, res, callback);
+    }
+
 };
+
+module.exports.httpcall = function (req, res) {
+    if (callbackHTTP == null) {
+        console.log ('callback is null');
+    } else {
+        callbackHTTP (req, res);
+    }
+}
+
+
