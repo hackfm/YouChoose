@@ -3,6 +3,7 @@ _ = require 'underscore'
 class QueueEntry
     constructor: (@id, @title, @videoLength, @img) ->
         @users = []
+        @skipsters = []
         @timestamp = new Date().getTime()
         
 
@@ -12,6 +13,12 @@ class QueueEntry
             return false
         @users.push user
         @timestamp = new Date().getTime()
+
+    skip: (user) =>
+        if _.include @skipsters, user
+            # user has already voted
+            return false
+        @skipsters.push user
 
     getElement: () =>
         return {
