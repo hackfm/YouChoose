@@ -34,6 +34,10 @@ class Queue extends events.EventEmitter
         if entry is null
             @currentVideo = null
             @startedVideoOn = null
+
+            @emit 'currentVideo'
+            @updateSkip()
+            @emit 'skipCount', 0, []
             return 
         @currentVideo = entry
         @startedVideoOn = new Date().getTime()
