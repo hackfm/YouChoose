@@ -33,7 +33,7 @@ var ui = function() {
                 nodeClient.skip(username); 
             });
         } else {
-            container.append("<span class='skipButtonDisabled'></span> ");
+            container.append("<span class='skipDisabled'></span> ");
         }
         container.append(skippedUsers.length +" of "+skipsNeeded + " required");
     }
