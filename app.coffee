@@ -224,12 +224,16 @@ server = http.createServer (req, res) ->
 
 
 args = process.argv.splice(2);
-if args.length < 1
-    console.log 'Please define a port'
+if args.length < 1 
+    port = process.env.VCAP_APP_PORT || 8080
 else
-    # Add ws server to http server
-    sockServer.installHandlers server, {prefix:'/sock'}
     port = args[0]
-    console.log 'Listening on port', port
-    server.listen port, '0.0.0.0'
+port = Number(port)
+if isNaN port 
+    port = process.env.VCAP_APP_PORT || 8080 
+# Add ws server to http server
+sockServer.installHandlers server, {prefix:'/sock'}
+
+console.log 'Listening on port', port
+server.listen port, '0.0.0.0'
     

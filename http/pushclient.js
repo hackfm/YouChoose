@@ -1,6 +1,6 @@
 var pushClient=function() {
     function startListening() {
-        var sock = new SockJS('http://ec2-176-34-79-126.eu-west-1.compute.amazonaws.com:8080/sock');
+        var sock = new SockJS('http://youchoose.cloudfoundry.com/sock');
 
         sock.onopen = function() {
            console.log('open');
