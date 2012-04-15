@@ -46,6 +46,7 @@ sockServer.on 'connection', (conn) ->
     queue.on 'noVideo', () =>
         json = {type: 'loadVideo', content:null}
         conn.write JSON.stringify json
+
     queue.on 'skipCount', (needed, users) =>
         json = {type: 'skipCount', content:{needed:needed, users:users}}
         conn.write JSON.stringify json
@@ -222,6 +223,8 @@ server = http.createServer (req, res) ->
             return
 
         queue.skipCurrent query.user
+
+        chat.sysMessage query.user, "has voted to skip the current video"
 
         res.writeHead 200, {'Content-Type': 'text/plain'}
         res.write '200 OK\n'

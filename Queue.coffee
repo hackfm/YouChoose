@@ -35,12 +35,17 @@ class Queue extends events.EventEmitter
             @currentVideo = null
             @startedVideoOn = null
 
-            @emit 'noVideo'
             @emit 'skipCount', 0, []
+            @emit 'noVideo'
+            
             return 
         @currentVideo = entry
         @startedVideoOn = new Date().getTime()
-        @timeoutId = setTimeout @skipToNextVideo, (entry.videoLength * 1000)
+        @timeoutId = setTimeout () =>
+            console.log 'timeout skip'
+            @skipToNextVideo()
+            console.log 'timeout skip done'
+        , (entry.videoLength * 1000)
         @emit 'currentVideo'
         @emit 'update'
         @updateSkip()
@@ -82,12 +87,17 @@ class Queue extends events.EventEmitter
         @connections = count
 
     skipToNextVideo: () =>
+        console.log 'skip debug'
+        if @timeoutId?
+            console.log 'delete id '
+            clearTimeout @timeoutId
+            @timeoutId = null
         if @videos.length 
             newEntry = @shiftTopVideo()
             @setCurrentVideo newEntry
         else
             @setCurrentVideo null
-        clearTimeout @timeoutId
+        
 
     hasCurrentVideo: () =>
         return @currentVideo isnt null 
