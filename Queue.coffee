@@ -7,6 +7,8 @@ class Queue extends events.EventEmitter
         @currentVideo = null
         @startedVideoOn = null
         @setMaxListeners 0
+        @connections = 0
+        @timeoutId = null
 
     addVideo: (entry) =>
         if @currentVideo is null
@@ -35,15 +37,10 @@ class Queue extends events.EventEmitter
             return 
         @currentVideo = entry
         @startedVideoOn = new Date().getTime()
-        setTimeout () =>
-            if @videos.length 
-                newEntry = @shiftTopVideo()
-                @setCurrentVideo newEntry
-            else
-                @setCurrentVideo null
-        , (entry.videoLength * 1000)
+        @timeoutId = setTimeout @skipToNextVideo, (entry.videoLength * 1000)
         @emit 'currentVideo'
         @emit 'update'
+        @updateSkip()
 
     getSortedList: (sortFunction) =>
         listSorted = _.sortBy @videos, sortFunction
@@ -64,6 +61,31 @@ class Queue extends events.EventEmitter
         top    = @getTopList().slice 0,5
         recent = @getRecentList().slice 0,5
         return {type: "updatePlaylist", content: {top: top, recent: recent}}
+
+    skipCurrent: (user) =>
+        if @currentVideo?
+            @currentVideo.skip(user)
+            @updateSkip()
+
+    updateSkip: () =>
+        skipsNeeded = Math.ceil(@connections/2)
+        if @currentVideo.skipsters.length >= skipsNeeded
+            #skip
+            @skipToNextVideo()
+        else
+            @emit 'skipCount', skipsNeeded, @currentVideo.skipsters
+
+    updateConnectionNumber: (count) =>
+        @connections = count
+
+
+    skipToNextVideo: () =>
+        if @videos.length 
+            newEntry = @shiftTopVideo()
+            @setCurrentVideo newEntry
+        else
+            @setCurrentVideo null
+        clearTimeout @timeoutId
 
     hasCurrentVideo: () =>
         return @currentVideo isnt null 

@@ -27,11 +27,13 @@ currentConnections = 0;
 sockServer = sockjs.createServer()
 sockServer.on 'connection', (conn) ->
     ++currentConnections
+    queue.updateConnectionNumber currentConnections
     #conn.on 'data', (message) ->
     #    conn.write message
     conn.on 'close', () ->
         console.log 'close'
         --currentConnections
+        queue.updateConnectionNumber currentConnections
 
     sendUpdate = () =>
         conn.write JSON.stringify queue.getQueue()
@@ -41,6 +43,9 @@ sockServer.on 'connection', (conn) ->
 
     queue.on 'update', sendUpdate
     queue.on 'currentVideo', sendCurrentVideo
+    queue.on 'skipCount', (needed, users) =>
+        json = {type: 'skipCount', content:{needed:needed, users:users}}
+        conn.write JSON.stringify json
 
     chat.on 'chat', (user, message) =>
         json = {type: 'chat', content:{user:user, message:message}}
@@ -49,6 +54,7 @@ sockServer.on 'connection', (conn) ->
     # Send updates
     if queue.hasCurrentVideo()
         sendCurrentVideo()
+        queue.updateSkip()
     sendUpdate()
 
 # Start queue
@@ -206,6 +212,19 @@ server = http.createServer (req, res) ->
         res.write result
         res.end() 
         return
+
+    if uri is '/skip'
+        unless query.user? 
+            res.write '404 No user found\n';
+            return
+
+        queue.skipCurrent query.user
+
+        res.writeHead 200, {'Content-Type': 'text/plain'}
+        res.write '200 OK\n'
+        res.end()   
+        return
+
 
 
     # no special case, so use the filesystem
