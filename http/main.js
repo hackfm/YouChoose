@@ -54,6 +54,9 @@ var youtube=function() {
         //var player = document.getElementById("ytplayer");
         player.loadVideoById(videoId,startTime);
     }
+    function stopVideo() {
+        player.stopVideo();
+    }
     
     swfobject.embedSWF("http://www.youtube.com/apiplayer?enablejsapi=1&version=3&playerapiid=ytplayer",
                        "ytapiplayer", "720", "480", "8", null, null, { allowScriptAccess: "always" }, { id: "ytplayer" });

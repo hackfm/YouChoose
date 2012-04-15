@@ -27,7 +27,7 @@ var pushClient=function() {
     
     function handleLoadVideo(content) {
         if (content === null) {
-            alert("Video not found");
+            youtube.stopVideo();
         }
         youtube.playVideo(content.id, content.position);
         $("#videoTitle").text(content.title);
