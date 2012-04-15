@@ -60,7 +60,7 @@ var youtube=function() {
     }
     
     swfobject.embedSWF("http://www.youtube.com/apiplayer?enablejsapi=1&version=3&playerapiid=ytplayer",
-                       "ytapiplayer", "720", "480", "8", null, null, { allowScriptAccess: "always" }, { id: "ytplayer" });
+                       "ytapiplayer", videoWidth, videoHeight, "8", null, null, { allowScriptAccess: "always" }, { id: "ytplayer" });
     
     return {
         "playVideo":playVideo,

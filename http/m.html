@@ -3,8 +3,8 @@
 <head>
   <title>YouChoose - London Real-Time 2012</title>
   <script type="text/javascript">
-    var videoWidth=720;
-    var videoHeight=480;
+    var videoWidth=320;
+    var videoHeight=240;
   </script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript"></script>
@@ -16,7 +16,7 @@
   <script src="ui.js"></script>
   <script src="main.js"></script>
   
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="style_m.css" />
   <link rel="stylesheet" type="text/css" href="lib/css/ui-darkness/jquery-ui-1.8.18.custom.css" />
 
 </head>
@@ -27,8 +27,6 @@
     </div>
     <div id="submitArea">
         <div>Submit new video: <input type="text" name="title" id="videoSubmitInput" /><input type="submit" id="videoSubmitSubmit" /></div>
-        <div>or SMS search query to <span class="phoneNumber">020 3322 2654</span></div>
-        <div class="geckoLink"><a href="http://tinyurl.com/youchoose-geckoboard">GeckoBoard</a> for YouChoose</div>
     </div>
     <div id="videoArea" style="display:none";>
         <h2 id="videoTitle">&nbsp;</h2>
@@ -48,10 +46,6 @@
         <div id="chat"> 
         </div>
         <input type="text" name="message" id="chatInput" />
-    </div>
-    <div id="poweredBy">
-        Powered by:
-        <div id="logoSpam"><img src="img/cloudfoundry.png" /><img src="img/sockjs.png" /><img src="img/twilio.png" /><img src="img/geckoboard.png" /></div>
     </div>
 
     <div id="userEntry" style="display:none;">

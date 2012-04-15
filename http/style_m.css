@@ -1,0 +1,29 @@
+body {
+    font-family:sans-serif;
+    background-color: #EBEBEB;
+    color: #303030;
+}
+
+#chat {height:140px; background-color:white;border:1px solid #777; overflow-y:scroll;}
+#chatInput {width:100%; }
+#videoArea {}
+#playlistArea { }
+#submitArea { }
+#mainColumn {}
+#logoSpam {text-align:center; }
+#logoSpam img {margin-left:10px; margin-right:10px; }
+
+
+#header {width:164px; height:60px; background: url(img/logo.png) no-repeat; margin-bottom:20px;}
+#header span {display:none; }
+img {vertical-align:middle; }
+.phoneNumber {font-size:1.2em; font-weight: bold; }
+.upvoteButton { cursor: pointer; width:20px; height:20px; background: url(img/upvote.png); display:inline-block; }
+.upvoteDisabled { width:20px; height:20px; background: url(img/upvote_disabled.png); display:inline-block; }
+.skipButton { cursor: pointer; width:30px; height:20px; background: url(img/skip.png); display:inline-block; }
+.skipDisabled { width:30px; height:20px; background: url(img/skip_disabled.png); display:inline-block; }
+.thumbnail {width:40px; height:40px; }
+h3 {background-color:#2B2B2B; color:#FFF; font-weight:normal; font-size:0.9em; padding:5px;}
+.videoEntry {border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; margin-top:2px; margin-bottom:2px; position:relative;}
+.videoTitle {font-size:0.9em;  display:inline-block; position:absolute; left:70px;top:5px;height:40px; overflow:hidden;}
+.geckoLink {font-size:0.8em;}
