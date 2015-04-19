@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/hackfm/YouChoose",
   "dependencies": {
+    "body-parser": "^1.12.3",
     "coffee-script": "^1.9.2",
+    "express": "^4.12.3",
     "sockjs": "^0.3.15",
     "underscore": "^1.8.3"
   }
