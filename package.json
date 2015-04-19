@@ -1,0 +1,24 @@
+{
+  "name": "YouChoose",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.coffey",
+  "scripts": {
+    "start": "./node_modules/coffee-script/bin/coffee app.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hackfm/YouChoose.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hackfm/YouChoose/issues"
+  },
+  "homepage": "https://github.com/hackfm/YouChoose",
+  "dependencies": {
+    "coffee-script": "^1.9.2",
+    "sockjs": "^0.3.15",
+    "underscore": "^1.8.3"
+  }
+}
