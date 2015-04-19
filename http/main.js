@@ -20,27 +20,6 @@ function chatSubmit() {
     msgbox.val("");
 }
 
-
-
-function onYouTubePlayerReady(playerId) {
-    player = document.getElementById("ytplayer");
-    pushClient.startListening();
-    
-    $("#videoSubmitInput").keypress(function(e) {
-        if(e.which == 13) {
-            videoSubmit();
-        }
-    });
-    $("#videoSubmitSubmit").click(videoSubmit);
-    
-    $("#chatInput").keypress(function(e) {
-        if(e.which == 13) {
-            chatSubmit();
-        }
-    });
-    
-}
-
 $(document).ready(function() {
     $("#userEntry").dialog({buttons: {"OK": userEntrySubmit}, "modal":true });
     $("#usernameEntry").keypress(function(e) {
@@ -49,22 +28,36 @@ $(document).ready(function() {
         }
     });
 });
-var youtube=function() {
-    function playVideo(videoId,startTime) {
-        //var player = document.getElementById("ytplayer");
-        player.loadVideoById(videoId,startTime);
-    }
-    function stopVideo() {
-        player.stopVideo();
-        player.clearVideo();
-    }
-    
-    swfobject.embedSWF("http://www.youtube.com/apiplayer?enablejsapi=1&version=3&playerapiid=ytplayer",
-                       "ytapiplayer", videoWidth, videoHeight, "8", null, null, { allowScriptAccess: "always" }, { id: "ytplayer" });
-    
-    return {
-        "playVideo":playVideo,
-        "stopVideo":stopVideo
-    };
-}();
+var player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('viedoPlayer', {
+        height: '390',
+        width: '640',
+        playerVars: { 'controls': 0, showinfo: 0, modestbranding: 1, disablekb: 1 },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
 
+function onPlayerReady() {
+    pushClient.startListening();
+
+    $("#videoSubmitInput").keypress(function(e) {
+        if(e.which == 13) {
+            videoSubmit();
+        }
+    });
+    $("#videoSubmitSubmit").click(videoSubmit);
+
+    $("#chatInput").keypress(function(e) {
+        if(e.which == 13) {
+            chatSubmit();
+        }
+    });
+}
+
+function onPlayerStateChange() {
+    console.log('onPlayerStateChange');
+}

@@ -27,10 +27,15 @@ var pushClient=function() {
 
     function handleLoadVideo(content) {
         if (content === null) {
-            youtube.stopVideo();
+            player.stopVideo();
+            player.clearVideo();
+            $("#videoTitle").text('');
+        } else {
+            player.loadVideoById(content.id, content.position);
+            player.playVideo();
+            $("#videoTitle").text(content.title);
         }
-        youtube.playVideo(content.id, content.position);
-        $("#videoTitle").text(content.title);
+
     }
 
     function handleSkipMessage(content) {

@@ -15,6 +15,7 @@
   <script src="pushclient.js"></script>
   <script src="ui.js"></script>
   <script src="main.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
 
   <link rel="stylesheet" type="text/css" href="style.css" />
   <link rel="stylesheet" type="text/css" href="lib/css/ui-darkness/jquery-ui-1.8.18.custom.css" />
@@ -30,9 +31,7 @@
     </div>
     <div id="videoArea" style="display:none";>
         <h2 id="videoTitle">&nbsp;</h2>
-        <div id="ytapiplayer">
-            You need Flash player 8+ and JavaScript enabled to view this video.
-        </div>
+        <div id="viedoPlayer" style="pointer-events: none;"></div>
     </div>
     <div id="playlistArea">
         <div id="skipArea"></div>
